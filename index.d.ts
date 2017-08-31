@@ -1,10 +1,9 @@
-/// <reference types="leaflet" />
+import {FeatureGroup, LatLng, MarkerOptions, PolylineOptions} from 'leaflet';
 
-declare namespace L {
+declare module 'Leaflet.MultiOptionsPolyline' {
+    type PolylineOptionsFn = (optionIdx: number) => PolylineOptions;
 
-    export type PolylineOptionsFn = (optionIdx: number) => PolylineOptions;
-
-    export interface MultiOptions {
+    interface MultiOptions {
         optionIdxFn: (latLng, prevLatLng, index, allLatlngs) => number;
         // options for the index returned by optionIdxFn. If supplied with a function then it will be called with the index
         options: PolylineOptions[] | PolylineOptionsFn;
@@ -13,20 +12,16 @@ declare namespace L {
         copyBaseOptions?: boolean;
     }
 
-    export interface MultiOptionsPolylineOptions extends MarkerOptions {
+    interface MultiOptionsPolylineOptions extends MarkerOptions {
         multiOptions: MultiOptions;
     }
 
-    export interface MultiOptionsPolyline extends FeatureGroup {
+    interface MultiOptionsPolyline extends FeatureGroup {
         initialize(latlng: LatLng[], options?: MultiOptionsPolylineOptions): void;
         setLatLngs(latlngs: LatLng[]): MultiOptionsPolyline;
         getLatLngs(): LatLng[];
         getLatLngsSegments(): LatLng[];
     }
 
-    export function multiOptionsPolyline(latlng: LatLng[], options?: MultiOptionsPolylineOptions): MultiOptionsPolyline;
-}
-
-declare module 'Leaflet.MultiOptionsPolyline' {
-    export = L;
+    function multiOptionsPolyline(latlng: LatLng[], options?: MultiOptionsPolylineOptions): MultiOptionsPolyline;
 }
